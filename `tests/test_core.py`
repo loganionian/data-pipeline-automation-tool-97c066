@@ -1,0 +1,28 @@
+import pytest
+from src.data_pipeline_automation_tool.core import Pipeline, DataSource, DataSink
+
+def test_pipeline_run():
+    pipeline = Pipeline()
+    pipeline.add_source('source_database', {})
+    pipeline.add_sink('target_data_warehouse', {})
+    pipeline.run()  # Ensure this doesn't raise an error
+
+def test_data_source():
+    source = DataSource('source_database', {})
+    data = source.read_data()
+    assert not data.empty
+
+def test_data_sink():
+    sink = DataSink('target_data_warehouse', {})
+    df = DataFrame({'column1': [1], 'column2': ['a']})
+    sink.write_data(df)  # Ensure this doesn't raise an error
+
+def test_add_source():
+    pipeline = Pipeline()
+    pipeline.add_source('source_database', {})
+    assert len(pipeline.sources) == 1
+
+def test_add_sink():
+    pipeline = Pipeline()
+    pipeline.add_sink('target_data_warehouse', {})
+    assert len(pipeline.sinks) == 1
