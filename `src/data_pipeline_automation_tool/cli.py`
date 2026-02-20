@@ -1,0 +1,15 @@
+import click
+from .core import Pipeline
+
+@click.command()
+@click.option('--source', required=True, help='Type of the data source')
+@click.option('--sink', required=True, help='Type of the data sink')
+def main(source, sink):
+    """CLI for running the data pipeline automation tool."""
+    pipeline = Pipeline()
+    pipeline.add_source(source, {})
+    pipeline.add_sink(sink, {})
+    pipeline.run()
+
+if __name__ == '__main__':
+    main()
