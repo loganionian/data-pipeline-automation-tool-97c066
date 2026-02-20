@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "data-pipeline-automation-tool"
+version = "0.1.0"
+description = "An automation tool for building and managing data pipelines."
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.3"
+apache-airflow = "^2.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry-core"
