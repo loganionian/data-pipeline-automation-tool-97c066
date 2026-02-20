@@ -1,0 +1,71 @@
+import pandas as pd
+from typing import Any, Dict, List
+from datetime import datetime
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class DataSource:
+    """Represents a source of data."""
+    
+    def __init__(self, source_type: str, config: Dict[str, Any]):
+        self.source_type = source_type
+        self.config = config
+        logger.info(f"Initialized DataSource of type {source_type}")
+
+    def read_data(self) -> pd.DataFrame:
+        """Reads data from the source."""
+        logger.info("Reading data from source...")
+        # Here you'd implement the logic to read from the actual data source
+        if self.source_type == 'source_database':
+            return pd.DataFrame({'column1': [1, 2], 'column2': ['a', 'b']})
+        else:
+            raise NotImplementedError("DataSource type not implemented.")
+
+class DataSink:
+    """Represents a sink for data."""
+    
+    def __init__(self, sink_type: str, config: Dict[str, Any]):
+        self.sink_type = sink_type
+        self.config = config
+        logger.info(f"Initialized DataSink of type {sink_type}")
+
+    def write_data(self, df: pd.DataFrame) -> None:
+        """Writes data to the sink."""
+        logger.info("Writing data to sink...")
+        # Here you'd implement the logic to write to the actual data sink
+        if self.sink_type == 'target_data_warehouse':
+            logger.info("Data written successfully.")
+        else:
+            raise NotImplementedError("DataSink type not implemented.")
+
+class Pipeline:
+    """A pipeline that connects data sources and sinks."""
+    
+    def __init__(self):
+        self.sources: List[DataSource] = []
+        self.sinks: List[DataSink] = []
+        logger.info("Initialized Pipeline.")
+
+    def add_source(self, source_type: str, config: Dict[str, Any]) -> None:
+        """Adds a data source to the pipeline."""
+        source = DataSource(source_type, config)
+        self.sources.append(source)
+        logger.info(f"Added source: {source_type}")
+
+    def add_sink(self, sink_type: str, config: Dict[str, Any]) -> None:
+        """Adds a data sink to the pipeline."""
+        sink = DataSink(sink_type, config)
+        self.sinks.append(sink)
+        logger.info(f"Added sink: {sink_type}")
+
+    def run(self) -> None:
+        """Runs the pipeline."""
+        logger.info("Running pipeline...")
+        for source in self.sources:
+            data = source.read_data()
+            for sink in self.sinks:
+                sink.write_data(data)
+        logger.info("Pipeline run completed.")
